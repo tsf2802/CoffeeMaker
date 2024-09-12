@@ -6,11 +6,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import java.lang.reflect.Field;
 import static org.mockito.Mockito.*;
 
 
 import coffeemaker.domain.Recipe;
+import coffeemaker.domain.RecipeBook;
 
 public class RecipeTests {
     private Recipe mockingRecipe;
@@ -101,11 +102,81 @@ public class RecipeTests {
 	 ***********************************************/	
 
 	@Test
-	@DisplayName("setName edge case test")
+	@DisplayName("toString test")
     public void validtoString() {
 		CuT.setName("standardDrink");
 		assertEquals("Recipe{standardDrink}", CuT.toString());
     }
+
+	@Test
+	@DisplayName("hashCode test")
+    public void validhashCode() {
+		CuT.setName("standardDrink");
+		assertEquals(-2017642502, CuT.hashCode());
+    }
+
+	@Test
+	@DisplayName("Test when Objects names are equal")
+    public void sameObjectEqualsName() {
+		CuT.setName("standardDrink");
+		Recipe compareObject = new Recipe();
+		compareObject.setName("standardDrink");
+		assertTrue(CuT.equals(compareObject));
+    }
+
+	@Test
+	@DisplayName("Test when Objects are equal")
+    public void sameObjectEquals() {
+		assertTrue(CuT.equals(CuT));
+    }
+
+	@Test
+	@DisplayName("Object input null")
+    public void nullObjectEquals() {
+		Recipe compareObject = null;
+		assertFalse(CuT.equals(compareObject));
+    }
 	
+	@Test
+	@DisplayName("Object input is a different class")
+    public void diffClassObjectEquals() {
+		RecipeBook compareObject = new RecipeBook();
+		assertFalse(CuT.equals(compareObject));
+    }
+
+
+	@Test
+	@DisplayName("Original Name is null & other is named")
+	public void testNullNameMismatch() throws Exception {
+		 Recipe compareObject = new Recipe();
+		 compareObject.setName("testName");
+		 Field nameField = Recipe.class.getDeclaredField("name");
+		 nameField.setAccessible(true);
+		 nameField.set(CuT, null);  //reflection to set name field to null
+		 boolean compareValue = CuT.equals(compareObject);
+		 assertEquals(false, compareValue);
+	}
+	@Test
+	@DisplayName("Original Name is null & other is also null")
+	public void testNullNameMismatchAndOtherNull() throws Exception {
+		 Recipe compareObject = new Recipe();
+		 Field nameField = Recipe.class.getDeclaredField("name");
+		 nameField.setAccessible(true);
+		 nameField.set(CuT, null); 
+		 nameField.set(compareObject,null); //reflection to set name field to null
+		 boolean compareValue = CuT.equals(compareObject);
+		 assertEquals(true, compareValue);
+	}
+
+	@Test
+	@DisplayName("Test when Objects are equal")
+    public void objectDiffNames() {
+		CuT.setName("standardDrink");
+		Recipe compareObject = new Recipe();
+		compareObject.setName("unstandardDrink");
+		assertFalse(CuT.equals(compareObject));
+    }
+
+
 
 }

@@ -41,7 +41,7 @@ public class Recipe {
    * @param name The name to set; must have at least one non-blank character.
    */
   public void setName(String name) {
-    if (name != null) {
+    if (name != null && !name.trim().isEmpty()) { //line modified
       this.name = name;
     }
   }
