@@ -57,6 +57,10 @@ public class RecipeBook {
    * @return {@code true} if the operation succeeds; otherwise {@code false}
    */
   public boolean addRecipe(Recipe newRecipe) {
+    // Guard condition : prof said guard conditions are fine
+    if(newRecipe == null) return false;
+
+
     //Assume the recipe doesn't exist in the array until find out otherwise
     boolean exists = false;
     //Check that recipe doesn't already exist in the array
@@ -89,6 +93,8 @@ public class RecipeBook {
    * @return the name of the old recipe or {@code null} if the delete operation failed
    */
   public String deleteRecipe(int recipeToDelete) {
+    // Guard condition : prof said guard conditions are fine
+    if(recipeToDelete < 0 || recipeToDelete > NUM_RECIPES) return null;
     if (recipeArray[recipeToDelete] != null) {
       String recipeName = recipeArray[recipeToDelete].getName();
       recipeArray[recipeToDelete] = null;
