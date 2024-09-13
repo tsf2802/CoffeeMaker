@@ -8,10 +8,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import static org.mockito.Mockito.*;
-
-
 import coffeemaker.domain.Recipe;
 import coffeemaker.domain.RecipeBook;
+import coffeemaker.exceptions.RecipeException;
+import org.junit.jupiter.api.Assertions;
 
 public class RecipeTests {
     private Recipe mockingRecipe;
@@ -26,8 +26,7 @@ public class RecipeTests {
 
 	@AfterEach
 	public void tearDown() {
-		// add tear down here
-//		CuT = null;
+		CuT = null;
 	}
 
 	/***********************************************
@@ -109,10 +108,19 @@ public class RecipeTests {
     }
 
 	@Test
-	@DisplayName("hashCode test")
+	@DisplayName("hashCode valid test")
     public void validhashCode() {
 		CuT.setName("standardDrink");
 		assertEquals(-2017642502, CuT.hashCode());
+    }
+
+	@Test
+	@DisplayName("hashCode null name test")
+    public void nullHashCode() throws Exception {
+		Field nameField = Recipe.class.getDeclaredField("name");
+		nameField.setAccessible(true);
+		nameField.set(CuT, null); 
+		assertEquals(31, CuT.hashCode());
     }
 
 	@Test
@@ -136,7 +144,7 @@ public class RecipeTests {
 		Recipe compareObject = null;
 		assertFalse(CuT.equals(compareObject));
     }
-	
+
 	@Test
 	@DisplayName("Object input is a different class")
     public void diffClassObjectEquals() {
@@ -177,6 +185,132 @@ public class RecipeTests {
 		assertFalse(CuT.equals(compareObject));
     }
 
+	/***********************************************
+	 * set type method tests
+	 ***********************************************/	
+	//setPrice
+	@Test
+	@DisplayName("Test standard price and larger than 0")
+    public void setPriceHappyPath() {
+		CuT.setPrice("10");
+		assertEquals(10, CuT.getPrice());
+	}
 
+	@Test
+	@DisplayName("Test negative price and error")
+    public void setPriceNonPositive() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setPrice("-10"));
+	}
 
+	@Test
+	@DisplayName("Test non numeric string and error")
+    public void setPriceNonValid() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setPrice("gg"));
+	}
+
+	@Test
+	@DisplayName("Test null input and error")
+    public void setPriceNull() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setPrice(null));
+	}
+	//setAmtCoffee
+	@Test
+	@DisplayName("Test standard price and larger than 0")
+    public void setCoffeeHappyPath() {
+		CuT.setAmtCoffee("10");
+		assertEquals(10, CuT.getAmtCoffee());
+	}
+
+	@Test
+	@DisplayName("Test negative price and error")
+    public void setCoffeeNonPositive() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtCoffee("-10"));
+	}
+
+	@Test
+	@DisplayName("Test non numeric string and error")
+    public void setCoffeeNonValid() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtCoffee("gg"));
+	}
+
+	@Test
+	@DisplayName("Test null input and error")
+    public void setCoffeeNull() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtCoffee(null));
+	}
+	//setAmtChocolate
+	@Test
+	@DisplayName("Test standard price and larger than 0")
+    public void setChocolateHappyPath() {
+		CuT.setAmtChocolate("10");
+		assertEquals(10, CuT.getAmtChocolate());
+	}
+
+	@Test
+	@DisplayName("Test negative price and error")
+    public void setChocolateNonPositive() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtChocolate("-10"));
+	}
+
+	@Test
+	@DisplayName("Test non numeric string and error")
+    public void setChocolateNonValid() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtChocolate("gg"));
+	}
+
+	@Test
+	@DisplayName("Test null input and error")
+    public void setChocolateNull() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtChocolate(null));
+	}
+	//setAmtSugar
+	@Test
+	@DisplayName("Test standard price and larger than 0")
+    public void setSugarHappyPath() {
+		CuT.setAmtSugar("10");
+		assertEquals(10, CuT.getAmtSugar());
+	}
+
+	@Test
+	@DisplayName("Test negative price and error")
+    public void setSugarNonPositive() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtSugar("-10"));
+	}
+
+	@Test
+	@DisplayName("Test non numeric string and error")
+    public void setSugarNonValid() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtSugar("gg"));
+	}
+
+	@Test
+	@DisplayName("Test null input and error")
+    public void setSugarNull() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtSugar(null));
+	}
+	//SetAmtMilk Tests
+	@Test
+	@DisplayName("Test standard price and larger than 0")
+    public void setMilkHappyPath() {
+		CuT.setAmtMilk("10");
+		assertEquals(10, CuT.getAmtMilk());
+	}
+
+	@Test
+	@DisplayName("Test negative price and error")
+    public void setMilkNonPositive() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtMilk("-10"));
+	}
+
+	@Test
+	@DisplayName("Test non numeric string and error")
+    public void setMilkNonValid() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtMilk("gg"));
+	}
+
+	@Test
+	@DisplayName("Test null input and error")
+    public void setMilkNull() {
+		Assertions.assertThrows(RecipeException.class, () -> CuT.setAmtMilk(null));
+	}
 }
